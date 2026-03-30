@@ -48,3 +48,24 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+# GIT CHANGES
+
+1. Agregar cambios
+
+   ```git
+   git add .
+   ```
+
+2. Cometer cambios
+
+   ```git
+   git commit -m "Descripción del cambio"
+   ```
+
+3. Empujar cambios
+
+   ```git
+   git push -u origin main (Si es la primera vez que se empujan cambios)
+   git push (Si el comando anterior ya se ejecutó antes)
+   ```
