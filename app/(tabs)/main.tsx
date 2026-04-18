@@ -1,24 +1,30 @@
-import { Colors, Fonts, Styles } from "@/constants/theme";
-import Panel from "@/components/panel";
 import MoneyText from "@/components/money-text";
-import { Animated, View, StyleSheet, Text, useColorScheme, ScrollView, Pressable } from "react-native";
+import Panel from "@/components/panel";
+import { Fonts, Styles } from "@/constants/theme";
 import { useRef, useState } from "react";
-
+import {
+  Animated,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  useColorScheme,
+} from "react-native";
 
 export default function MainScreen() {
-  const colorScheme = useColorScheme()
-  
+  const colorScheme = useColorScheme();
+
   /* Animación para picarle al button */
   const translateY = useRef(new Animated.Value(0)).current;
   const objOpacity = useRef(new Animated.Value(1)).current;
   const [isUp, setIsUp] = useState(false);
 
-
   return (
-    <ScrollView style={[Styles.scrollview, {paddingTop: 200}]}>
-      <Animated.View style={{ transform: [{translateY}], opacity: objOpacity }}>
+    <ScrollView style={[Styles.scrollview, { paddingTop: 200 }]}>
+      <Animated.View
+        style={{ transform: [{ translateY }], opacity: objOpacity }}
+      >
         <Pressable onPress={toggleContent}>
-          <Panel amount={6.7} />
+          <Panel amount={670} />
         </Pressable>
       </Animated.View>
       <Animated.View>
@@ -27,7 +33,7 @@ export default function MainScreen() {
         <MoneyText text="asdasda" amount={30} />
       </Animated.View>
     </ScrollView>
-  )
+  );
 
   function toggleContent(): void {
     Animated.timing(translateY, {
@@ -41,17 +47,16 @@ export default function MainScreen() {
       duration: 250,
       useNativeDriver: true,
     }).start();
-  
+
     setIsUp(!isUp);
   }
 }
 
-
 const styles = StyleSheet.create({
   title: {
     marginVertical: 100,
-    textAlign: 'center',
-    fontSize: 5*16,
-    fontFamily: Fonts.primaryBold
-  }
-})
+    textAlign: "center",
+    fontSize: 5 * 16,
+    fontFamily: Fonts.primaryBold,
+  },
+});

@@ -1,5 +1,6 @@
 import Mens from "@/components/mens";
 import { Colors, Fonts } from "@/constants/theme";
+import { useAppContext } from "@/context/AppContext";
 import { Text as SkiaText, useFont } from "@shopify/react-native-skia";
 import { StyleSheet, Text, View } from "react-native";
 import { Pie, PolarChart } from "victory-native";
@@ -16,26 +17,16 @@ export default function PieChart() {
     "#B0E0E6",
   ];
 
-  const INFO = [
-    { label: "agua", value: 250 },
-    { label: "comida", value: 4500 },
-    { label: "netflix", value: 219 },
-    { label: "internet", value: 399 },
-    { label: "spotify", value: 99 },
-    { label: "renta", value: 6000 },
-    { label: "gasolina", value: 1500 },
-    { label: "elektra", value: 800 },
-    { label: "crédito", value: 1200 },
-    { label: "disponible", value: 3000 },
-  ];
+  const { expenses } = useAppContext();
+  const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
 
-  let totalSum = 0;
-  INFO.forEach((value) => {
-    totalSum += value.value;
-  });
+  const INFO = expenses.map((exp, index) => ({
+    label: exp.name ?? "Sin nombre",
+    value: exp.amount,
+  }));
 
-  let DATA = INFO.map((item, index) => ({
-    ...item,
+  let DATA = INFO.map((part, index) => ({
+    ...part,
     color:
       index === INFO.length - 1 && index % PALETACOLORES.length === 0
         ? PALETACOLORES[4]
@@ -46,11 +37,6 @@ export default function PieChart() {
     require("../../assets/fonts/Cascadia_Mono,Inter,Montserrat,Stack_Sans_Headline/Montserrat/static/Montserrat-Medium.ttf"),
     12,
   );
-
-  const logSlice = (slice: any) => {
-    console.log(slice);
-    return null;
-  };
 
   return (
     <View>
@@ -102,7 +88,9 @@ export default function PieChart() {
                   <SkiaText
                     x={x}
                     y={y + 10}
-                    text={((slice.value * 100) / totalSum).toFixed(1) + "%"}
+                    text={
+                      ((slice.value * 100) / totalExpenses).toFixed(1) + "%"
+                    }
                     font={font}
                     color={"grey"}
                     zIndex={1000}
