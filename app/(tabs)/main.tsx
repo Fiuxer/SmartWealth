@@ -1,3 +1,4 @@
+import FloatingWindow from "@/components/floating-window";
 import MoneyText from "@/components/money-text";
 import Panel from "@/components/panel";
 import { Fonts, Styles } from "@/constants/theme";
@@ -17,6 +18,9 @@ export default function MainScreen() {
   const translateY = useRef(new Animated.Value(0)).current;
   const objOpacity = useRef(new Animated.Value(1)).current;
   const [isUp, setIsUp] = useState(false);
+  const [showWindow, setShowWindow] = useState(false);
+
+  setShowWindow(true);
 
   return (
     <ScrollView style={[Styles.scrollview, { paddingTop: 200 }]}>
@@ -32,6 +36,15 @@ export default function MainScreen() {
         <MoneyText text="Adios" amount={20} />
         <MoneyText text="asdasda" amount={30} />
       </Animated.View>
+      <FloatingWindow
+        visible={showWindow}
+        onClose={() => setShowWindow(false)}
+        name=""
+        amount={10}
+        time={new Date()}
+        desc=""
+        windowType=""
+      ></FloatingWindow>
     </ScrollView>
   );
 

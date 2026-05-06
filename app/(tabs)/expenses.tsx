@@ -12,6 +12,7 @@ export default function Expenses() {
     { name: "Adios", description: "hola", amount: 20 },
     { name: "Adios 2", description: "hola 2", amount: 20 },
     { name: "Adios 3", description: "hola 3", amount: 35 },
+    { name: "Adios 4", description: "hola 4", amount: 30 },
   ];
 
   // Conseguir la cantidad total de gastos

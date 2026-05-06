@@ -38,12 +38,23 @@ export default function PieChart() {
     12,
   );
 
+  if (DATA.length === 0) {
+    return (
+      <View>
+        <Text style={style.title}>No hay ningún gasto.</Text>
+        <Text style={style.subtitle}>
+          Abre la ventana de suscripciones para cargar los datos.
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <View>
       <Text style={style.title}>División de ganancias</Text>
       <Text style={style.subtitle}>Ganancias mensuales</Text>
       <View style={[style.div, { marginBottom: 30 }]}>
-        <Mens amount={1503.97}></Mens>
+        <Mens amount={DATA.reduce((sum, d) => sum + d.value, 0)}></Mens>
       </View>
       <View style={{ height: 350 }}>
         <PolarChart
