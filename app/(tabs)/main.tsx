@@ -18,9 +18,8 @@ export default function MainScreen() {
   const translateY = useRef(new Animated.Value(0)).current;
   const objOpacity = useRef(new Animated.Value(1)).current;
   const [isUp, setIsUp] = useState(false);
-  const [showWindow, setShowWindow] = useState(false);
 
-  setShowWindow(true);
+  const [showWindow, setShowWindow] = useState(true);
 
   return (
     <ScrollView style={[Styles.scrollview, { paddingTop: 200 }]}>
@@ -39,10 +38,6 @@ export default function MainScreen() {
       <FloatingWindow
         visible={showWindow}
         onClose={() => setShowWindow(false)}
-        name=""
-        amount={10}
-        time={new Date()}
-        desc=""
         windowType=""
       ></FloatingWindow>
     </ScrollView>

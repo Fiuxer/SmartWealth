@@ -1,22 +1,21 @@
-import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 
 interface windowProps {
   visible: boolean;
   onClose: () => void;
-  name?: string;
-  amount: number;
-  time?: Date;
-  desc?: string;
   windowType: string;
 }
 
 export default function FloatingWindow({
   visible,
   onClose,
-  name,
-  amount,
-  time,
-  desc,
   windowType,
 }: windowProps) {
   return (
@@ -28,6 +27,29 @@ export default function FloatingWindow({
             <Pressable onPress={onClose} style={{ flex: 1 }}>
               <Text>x</Text>
             </Pressable>
+          </View>
+          <View style={{ flexDirection: "column" }}>
+            <View style={{ flexDirection: "row", flex: 1 }}>
+              <Text>Cosa</Text>
+            </View>
+            <View style={{ flexDirection: "row", flex: 1 }}>
+              <TextInput style={styles.input}></TextInput>
+            </View>
+            <View style={{ flex: 2 }}></View>
+            <View style={{ flexDirection: "row", flex: 1 }}>
+              <Text>Cosa</Text>
+            </View>
+            <View style={{ flexDirection: "row", flex: 1 }}>
+              <TextInput style={styles.input}></TextInput>
+            </View>
+            <View style={{ flex: 2 }}></View>
+            <View style={{ flexDirection: "row", flex: 1 }}>
+              <Text>Cosa</Text>
+            </View>
+            <View style={{ flexDirection: "row", flex: 1 }}>
+              <TextInput style={styles.input}></TextInput>
+            </View>
+            <View style={{ flex: 2 }}></View>
           </View>
         </View>
       </View>
@@ -43,14 +65,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   window: {
-    width: 300,
+    width: 350,
+    height: 670,
     padding: 20,
     backgroundColor: "#fff",
     borderRadius: 12,
-    elevation: 10, // android shadow
-    shadowColor: "#000", // ios shadow
+    elevation: 10,
+    shadowColor: "#000",
     shadowOpacity: 0.3,
     shadowRadius: 10,
     flexDirection: "column",
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#000000",
+    borderRadius: 8,
   },
 });
