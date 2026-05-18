@@ -5,3 +5,10 @@ export type Expense = {
 }
 
 export type ExpenseList = Expense[]
+
+export type Reminder = {
+  name: string
+  amount: number
+  last_reminder?: Date
+  interval: number
+}

@@ -16,6 +16,21 @@ import "react-native-reanimated";
 import { AppProvider } from "@/context/AppContext";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
+//database
+import { db } from "@/db"
+import { sql } from "drizzle-orm";
+
+db.run(sql`
+  CREATE TABLE IF NOT EXISTS reminders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    amount REAL NOT NULL,
+    last_reminder INTEGER,
+    interval INTEGER NOT NULL
+  )
+`)
+
+
 export const unstable_settings = {
   anchor: "(tabs)",
 };

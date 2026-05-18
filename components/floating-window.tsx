@@ -3,6 +3,7 @@ import { useState } from "react";
 import {
   Modal,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -12,8 +13,9 @@ import {
 interface windowProps {
   visible: boolean;
   onClose: () => void;
-  windowType: string[];
+  windowType: string;
 }
+
 
 export default function FloatingWindow({
   visible,
@@ -22,6 +24,11 @@ export default function FloatingWindow({
 }: windowProps) {
   const [selected, setSelected] = useState<Record<number, string>>({});
   const [active, setActive] = useState<Record<number, boolean>>({});
+  const [nombre, setNombre] = useState<Record<number, string>>({});
+  const [amount, setAmount] = useState<Record<number, string>>({});
+  const [date, setDate] = useState<Record<number, string>>({});
+  const [interval, setInterval] = useState<Record<number, number>>({});
+  const [reminder, setReminder] = useState<Record<number, boolean>>({});
 
   return (
     <Modal visible={visible} transparent animationType="fade">
@@ -33,12 +40,17 @@ export default function FloatingWindow({
               <Text>x</Text>
             </Pressable>
           </View>
-          <View style={{ flexDirection: "column" }}>
+          <ScrollView contentContainerStyle={{ flexDirection: "column" }}>
             {[
-              ["Fecha", "interval"],
               ["Nombre", "string"],
+              ["desc", "string"],
+              ["cantidad", "amount"],
               ["Tipo de ingreso", "type"],
+              ["Tipo de gasto", "type"],
+              ["Fecha", "interval"],
+              ["fecha fin", "interval"],
               ["Recordatorio", "reminder"],
+              ["recordar?", "reminder"],
             ].map(([label, type], i) => {
               if (type === "string") {
                 return (
@@ -47,7 +59,7 @@ export default function FloatingWindow({
                       <Text>{label}</Text>
                     </View>
                     <View style={{ flexDirection: "row", marginBottom: 50 }}>
-                      <TextInput style={styles.input} />
+                      <TextInput style={styles.input} value={nombre[i] ?? ""} onChangeText={(text) => setNombre((prev) => ({...prev, [i]: text}))} />
                     </View>
                   </View>
                 );
@@ -55,10 +67,10 @@ export default function FloatingWindow({
               if (type === "interval") {
                 return (
                   <View key={i} style={{ flexDirection: "column" }}>
-                    <View style={{ flexDirection: "row", marginBottom: 10 }}>
+                    <View style={{ flexDirection: "row", marginBottom: 5 }}>
                       <Text>{label}</Text>
                     </View>
-                    <View style={{ flexDirection: "row", marginBottom: 50 }}>
+                    <View style={{ flexDirection: "row", marginBottom: 20 }}>
                       {["Diario", "Semanal", "Mensual", "Anual"].map(
                         (op, j) => (
                           <Pressable
@@ -91,13 +103,25 @@ export default function FloatingWindow({
                   </View>
                 );
               }
-              if (type === "type") {
+              if (type === "amount" ) {
                 return (
                   <View key={i} style={{ flexDirection: "column" }}>
                     <View style={{ flexDirection: "row", marginBottom: 10 }}>
                       <Text>{label}</Text>
                     </View>
                     <View style={{ flexDirection: "row", marginBottom: 50 }}>
+                      <TextInput style={styles.input} keyboardType="numeric" value={amount[i] ?? ""} onChangeText={(amt) => setAmount((prev) => ({...prev, [i]: amt}))} />
+                    </View>
+                  </View>
+                );
+              }
+              if (type === "type") {
+                return (
+                  <View key={i} style={{ flexDirection: "column" }}>
+                    <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                      <Text>{label}</Text>
+                    </View>
+                    <View style={{ flexDirection: "row", marginBottom: 20 }}>
                       {["Fijo / Recurrente", "Unico / Variable"].map(
                         (op, j) => (
                           <Pressable
@@ -124,12 +148,42 @@ export default function FloatingWindow({
                 );
               }
               if (type === "reminder") {
-                // Tengo q hacer esto y para eso esta la variable esta de active setActive
-                // Recordar al momento es true o false depende es toggle ya tu sabe
+                return (
+                  <View key={i} style={{ flexDirection: "column" }}>
+                    <View style={{ flexDirection: "row", marginBottom: 5}}>
+                      <Text>{label}</Text>
+                    </View>
+                    <Pressable
+                      key={i}
+                      onPress={() => {
+                        setActive((prev) => ({  ...prev, [i]: !prev[i]}))
+                      }}
+                      style={[
+                        styles.toggleable,
+                        {
+                          marginBottom: 20,
+                          backgroundColor:
+                            active[i]
+                            ? Colors.light.primary
+                            : "#FFFFFF"
+                        }
+                      ]}>
+                        <Text>{active[i] ? "Activado" : "Desactivado"}</Text>
+                      </Pressable>
+                  </View>
+                )
               }
               return null;
             })}
-          </View>
+            <View style={{ width: 50, height: 50}}>
+              <Pressable
+                onPress={() => addInfo({name: Object.values(nombre).join(", "), amount: Object.values(amount).join(", ")}, windowType)}
+                style={{ backgroundColor: Colors.light.primary, width: 50, height: 50 }}
+              >
+
+              </Pressable>
+            </View>
+          </ScrollView>
         </View>
       </View>
     </Modal>
@@ -174,6 +228,30 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignItems: "center",
   },
+  toggleable: {
+    borderColor: "#000000",
+    borderRadius: 4,
+    borderWidth: 1,
+    height: 40,
+    margin: 5,
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+  }
 });
 
-/* q esté en horizontal con la cursiva */
+async function addInfo(info: any, windowType: string) {
+  console.log(info);
+  // switch (windowType) {
+  //   case "reminder":
+  //     await db.insert(reminders).values({
+  //       name: info.name,
+  //       amount: info.amount,
+  //       last_reminder: Date.now(),
+  //       interval: info.interval,
+  //     })
+  //     break;
+  //   default:
+  //     return;
+  // }
+}

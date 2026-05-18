@@ -38,7 +38,7 @@ export default function MainScreen() {
       <FloatingWindow
         visible={showWindow}
         onClose={() => setShowWindow(false)}
-        windowType=""
+        windowType="instant"
       ></FloatingWindow>
     </ScrollView>
   );
