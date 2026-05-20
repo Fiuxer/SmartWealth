@@ -21,7 +21,6 @@ import {
 
 const TEAL = "#3DBFA0";
 const RED  = "#E05C5C";
-
 export default function MainScreen() {
   const { entries, addEntry, total } = useAppContext();
 

@@ -1,32 +1,61 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat'
-import { WorkSans_400Regular } from '@expo-google-fonts/work-sans'
+import {
+  Montserrat_400Regular,
+  Montserrat_700Bold,
+  useFonts,
+} from "@expo-google-fonts/montserrat";
+import { WorkSans_400Regular } from "@expo-google-fonts/work-sans";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import "react-native-reanimated";
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { AppProvider } from "@/context/AppContext";
+import { useColorScheme } from "@/hooks/use-color-scheme";
+
+//database
+import { db } from "@/db"
+import { sql } from "drizzle-orm";
+
+db.run(sql`
+  CREATE TABLE IF NOT EXISTS reminders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    amount REAL NOT NULL,
+    last_reminder INTEGER,
+    interval INTEGER NOT NULL
+  )
+`)
+
 
 export const unstable_settings = {
-  anchor: '(tabs)',
+  anchor: "(tabs)",
 };
 
 export default function RootLayout() {
   const [loaded] = useFonts({
     Montserrat_400Regular,
     Montserrat_700Bold,
-    WorkSans_400Regular
-  })
+    WorkSans_400Regular,
+  });
 
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <AppProvider>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="modal"
+            options={{ presentation: "modal", title: "Modal" }}
+          />
+        </Stack>
+        <StatusBar style="auto" />
+      </ThemeProvider>
+    </AppProvider>
   );
 }

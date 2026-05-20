@@ -15,7 +15,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-
 const TEAL = "#3DBFA0";
 const RED  = "#E05C5C";
 
