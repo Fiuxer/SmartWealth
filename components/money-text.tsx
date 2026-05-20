@@ -1,24 +1,34 @@
-import { Fonts } from "@/constants/theme";
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-
-interface TextProperties {
-  amount: number,
-  text?: string,
+interface MoneyTextProps {
+  text: string;
+  amount: number;
+  color?: string;
 }
 
-export default function MoneyText({amount, text}: TextProperties) {
+export default function MoneyText({ text, amount, color = "#3DBFA0" }: MoneyTextProps) {
   return (
-    <View>
-      <Text style={Styles.text}>${amount}</Text>
-      <Text>{text}</Text>
+    <View style={styles.row}>
+      <Text style={[styles.amount, { color }]}>
+        ${amount.toFixed(2)}{" "}
+      </Text>
+      <Text style={styles.label}>{text}</Text>
     </View>
-  )
+  );
 }
 
-const Styles = StyleSheet.create({
-  text: {
-    fontSize: 16,
-    fontFamily: Fonts.primaryBold
-  }
-})
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: "row",
+    marginVertical: 2,
+    alignItems: "center",
+  },
+  amount: {
+    fontWeight: "bold",
+    fontSize: 14,
+  },
+  label: {
+    color: "#333",
+    fontSize: 14,
+  },
+});
