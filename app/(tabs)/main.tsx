@@ -27,7 +27,7 @@ export default function MainScreen() {
         style={{ transform: [{ translateY }], opacity: objOpacity }}
       >
         <Pressable onPress={toggleContent}>
-          <Panel amount={670} />
+          <Panel amount={67} />
         </Pressable>
       </Animated.View>
       <Animated.View>

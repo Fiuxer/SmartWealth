@@ -1,4 +1,8 @@
 import { Colors } from "@/constants/theme";
+import { db } from "@/db";
+import { reminders } from "@/db/schema";
+import { WindowData } from "@/types/expenses";
+import { FontAwesome6 } from "@expo/vector-icons";
 import { useState } from "react";
 import {
   Modal,
@@ -22,13 +26,27 @@ export default function FloatingWindow({
   onClose,
   windowType,
 }: windowProps) {
+  windowType = "subscription"
+
+  const [data, setData] = useState<WindowData>({ name: "" })
+
   const [selected, setSelected] = useState<Record<number, string>>({});
   const [active, setActive] = useState<Record<number, boolean>>({});
   const [nombre, setNombre] = useState<Record<number, string>>({});
   const [amount, setAmount] = useState<Record<number, string>>({});
   const [date, setDate] = useState<Record<number, string>>({});
   const [interval, setInterval] = useState<Record<number, number>>({});
-  const [reminder, setReminder] = useState<Record<number, boolean>>({});
+
+  const fields: [string, string, keyof typeof data][] = [
+    ["Nombre", "string", "name"],
+    ["Monto", "string", "amount"],
+    ...((windowType === "immediate") ? [["Descripcion", "string", "description"] as [string, string, keyof WindowData]]: []),
+    ...((windowType === "subscription" || windowType === "income") ? [["Tipo de ingreso", "string", "type"] as [string, string, keyof WindowData]]: []),
+    ...((windowType === "subscription" || windowType === "income") ? [["Frecuencia", "string", "frequency"] as [string, string, keyof WindowData]]: []),
+    ...((windowType === "subscription") ? [["Categoria", "string", "category"] as [string, string, keyof WindowData]]: []),
+    ...((windowType === "subscription" || windowType === "income") ? [["Recordatoria", "string", "reminder"] as [string, string, keyof WindowData]]: []),
+
+  ]
 
   return (
     <Modal visible={visible} transparent animationType="fade">
@@ -40,18 +58,8 @@ export default function FloatingWindow({
               <Text>x</Text>
             </Pressable>
           </View>
-          <ScrollView contentContainerStyle={{ flexDirection: "column" }}>
-            {[
-              ["Nombre", "string"],
-              ["desc", "string"],
-              ["cantidad", "amount"],
-              ["Tipo de ingreso", "type"],
-              ["Tipo de gasto", "type"],
-              ["Fecha", "interval"],
-              ["fecha fin", "interval"],
-              ["Recordatorio", "reminder"],
-              ["recordar?", "reminder"],
-            ].map(([label, type], i) => {
+          <ScrollView contentContainerStyle={{ flexDirection: "column", paddingBottom: 50 }}>
+            {fields.map(([label, type, key], i) => {
               if (type === "string") {
                 return (
                   <View key={i} style={{ flexDirection: "column" }}>
@@ -175,12 +183,28 @@ export default function FloatingWindow({
               }
               return null;
             })}
-            <View style={{ width: 50, height: 50}}>
+            <View style={{ width: "100%", height: 50, flexDirection: "row", justifyContent: "flex-end" }}>
               <Pressable
-                onPress={() => addInfo({name: Object.values(nombre).join(", "), amount: Object.values(amount).join(", ")}, windowType)}
-                style={{ backgroundColor: Colors.light.primary, width: 50, height: 50 }}
+                onPress={() => addInfo({
+                  name: Object.values(nombre).join(", "),
+                  amount: Object.values(amount).join(", "),
+                  selected: Object.values(selected).join(", "),
+                  active: Object.values(active).join(", "),
+                }, windowType)}
+                style={{
+                  backgroundColor: Colors.light.primary,
+                  width: 50,
+                  height: 50,
+                  borderRadius: 1000,
+                  alignContent: "center",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginRight: 0,
+                  borderColor: "#00000067",
+                  borderWidth: 3
+                }}
               >
-
+                <FontAwesome6 name="add" size={24} color="white"/>
               </Pressable>
             </View>
           </ScrollView>
@@ -242,16 +266,16 @@ const styles = StyleSheet.create({
 
 async function addInfo(info: any, windowType: string) {
   console.log(info);
-  // switch (windowType) {
-  //   case "reminder":
-  //     await db.insert(reminders).values({
-  //       name: info.name,
-  //       amount: info.amount,
-  //       last_reminder: Date.now(),
-  //       interval: info.interval,
-  //     })
-  //     break;
-  //   default:
-  //     return;
-  // }
+  switch (windowType) {
+    case "reminder":
+      await db.insert(reminders).values({
+        name: info.name,
+        amount: info.amount,
+        last_reminder: Date.now(),
+        interval: info.interval,
+      })
+      break;
+    default:
+      return;
+  }
 }
