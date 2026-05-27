@@ -1,5 +1,3 @@
-import type { EntryType } from "@/app/context/AppContext";
-import { useAppContext } from "@/app/context/AppContext";
 import MoneyText from "@/components/money-text";
 import Panel from "@/components/panel";
 import { Fonts, Styles } from "@/constants/theme";
@@ -18,6 +16,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import type { EntryType } from '../context/AppContext';
+import { useAppContext } from '../context/AppContext';
 
 const TEAL = "#3DBFA0";
 const RED  = "#E05C5C";

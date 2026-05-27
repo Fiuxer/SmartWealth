@@ -1,5 +1,3 @@
-import type { Frecuencia, Income, TipoIngreso } from "@/app/context/AppContext";
-import { useAppContext } from "@/app/context/AppContext";
 import Panel from "@/components/panel";
 import { Fonts, Styles } from "@/constants/theme";
 import { useState } from "react";
@@ -15,6 +13,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import type { Frecuencia, Income, TipoIngreso } from '../context/AppContext';
+import { useAppContext } from '../context/AppContext';
 
 const TEAL = "#3DBFA0";
 const RED  = "#E05C5C";
